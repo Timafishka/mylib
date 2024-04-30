@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyLib</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLib</title>
+    <style>
+        body {
+            background-color: #fcfcfc; /* Светло-серый фон */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background-color: #1111111;
+            width: 100%;
+            height: 92px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .container {
+            margin: 5px;
+        }
+        ol {
+            list-style-type:  none;
+        }
+        .rectangle {
+        position: relative;
+        height: 70%;
+        width: 100%;
+        background-color: rgba(100, 100, 100, 0);
+        text-align: left;
+        padding: 20px;
+        }
+
+        .text {
+            position: absolute;
+            left: 20px;
+            transform: translateY(-50%);
+            position: relative;
+            top: 50%;
+        }
+        .bkpic {
+            position: absolute;
+            transform: translateY(-50%);
+            position: relative;
+            text-align: right;
+            margin-right 4px;
+            margin-top: 19px;
+        }
+        .rectangle:hover {
+            cursor: pointer;
+        }
+                ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .publication {
+            max-width: 95%;
+            height: 128px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: thick double #f2f2f2;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: white;
+            align-items: center;
+        }
+        .publication:hover {
+            border-color: #ddd;
+        }
+        .publication .rectangle {
+            display: block;
+            cursor: pointer;
+            align-items: right;
+            align-items: center;
+        }
+        .publication .text {
+            font-size: 30px;
+            max-width: 65%;
+            padding: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            align-items: right;
+        }
+        h4 {
+            font-size: 30px;
+            max-width: 65%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .bkpic img {
+            max-width: 120px;
+            height: 120px;
+            border-radius: 8px;
+        }
+        .logout-btn {
+            width: 144px;
+            height: 40px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        .publication img {
+            float: right;
+        }
+        .bkpic {
+            position: relative;
+            text-align: right;
+            margin-right: 24px;
+            margin-top: -150px
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/profile">
+            <img src="{{ asts_rsc[2] }}" alt="Мой аккаунт" style="position: absolute; top: 22px; right: 24px; max-width: 48px; height: auto;">
+        </a>
+        <a href="{{ url_for('upload_page') }}">
+            <img src="{{ asts_rsc[1] }}" alt="Загрузить" style="position: absolute; top: 22px; right: 92px; max-width: 48px; height: auto;">
+        </a>
+        <a href="/">
+            <img class="logo" src="{{ asts_rsc[3] }}" alt="Главная страница" style="position: absolute; top: 2px; left: 2px; height: 88px; width: auto">
+        </a>
+        <div style="text-align: center; position: absolute; top: 22px; right: 37.5%; width: 25%; height: 48px;">
+            <input id="searchInput" style="border: thick double #d9d9d9; border-radius: 16px; width: 100%; height: 48px; font-size: 30px; padding-left: 48px" type="text" name="SearchForm" placeholder="Поиск по сайту" oninput="filterPublications()"><br><br>
+            <div style="text-align: center; position: absolute; top: -18px; left: 1%; width: 48px height: 48px;">
+                <h2 style="width: 100%; height: 48px; font-size: 30px;">🔍</h2>
+            </div>
+        </div>
+
+    </div>
+    <h2 style="margin-top: 144px; font-size: 48px;">Последние публикации</h2>
+    <ol id="publicationsList">
+        <!-- Publications will be dynamically added here -->
+        {% for publication in publications %}
+        <div class="container">
+            <li class="publication">
+                <div style="align-items: center;" class="rectangle" onclick="redirectToBook('{{ url_for('book', publicationcode=publication['publicationcode']) }}')">
+                    <div class="text">
+                        <h4>{{ publication['author'] }} - "{{ publication['title'] }}"</h4></div>
+                    <div class="bkpic"><img src="{{ publication['path2pic'] }}" alt="IMG/JPG"></div>
+                </div>
+            </li>
+        </div>
+        {% endfor %}
+    </ol>
+<script>
+    function filterPublications() {
+        const searchInput = document.getElementById('searchInput');
+        const searchText = searchInput.value.trim().toLowerCase();
+        const publications = document.querySelectorAll('.container');
+
+        publications.forEach(publication => {
+            const author = publication.querySelector('.text').textContent.toLowerCase();
+            const title = publication.querySelector('.text').textContent.toLowerCase();
+
+            if (author.includes(searchText) || title.includes(searchText)) {
+                publication.style.display = 'block';
+            } else {
+                publication.style.display = 'none';
+            }
+        });
+    }
+</script>
+<script>
+    function redirectToBook(url) {
+        window.location.href = url;
+    }
+</script>
+</body>
+</html>

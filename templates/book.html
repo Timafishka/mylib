@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ publication['title'] }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            min-width: 480px;
+        }
+        .header {
+            background-color: #ffffff;
+            width: 100%;
+            height: 92px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .header2 {
+            background-color: #fff;
+            height: 72px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .author {
+            width: 100%;
+            position: fixed;
+            top: 20px;
+            left: 0;
+            align-items: center;
+        }
+        .like-btn {
+            position: relative;
+            margin-right: 16px;
+        }
+        .like-btn img {
+            max-width: 48px;
+            height: auto;
+        }
+        .like-count {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0);
+            border: 2px solid rgba(0, 0, 0, 0);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            font-size: 20px;
+            color: white;
+            pointer-events: none;
+        }
+        .comment-btn img {
+            max-width: 48px;
+            height: auto;
+            cursor: pointer;
+        }
+        .container {
+            margin: 64px;
+            text-align: left;
+        }
+        .container_author {
+            transform: translate(0%, -550%);
+            display: flex;
+            height: 10px;
+            align-items: center;
+
+           }
+    </style>
+</head>
+<body>
+    <div class="header">
+    <a href="/profile">
+        <img src="{{ asts_rsc[1] }}" alt="Мой аккаунт" style="position: absolute; top: 22px; right: 24px; max-width: 48px; height: auto;">
+    </a>
+
+    <a href="{{ url_for('upload_page') }}">
+        <img src="{{ asts_rsc[4] }}" alt="Загрузить" style="position: absolute; top: 22px; right: 92px; max-width: 48px; height: auto;">
+    </a>
+
+    <a href="/">
+        <img class="logo" src="{{ asts_rsc[2] }}" alt="Главная страница" style="top: 2px; left: 37.430555555555555555555555555556wv; height: 88px; width: auto">
+    </a>
+
+    <a href="{{ author_link }}" >
+        <img src="{{ asts_rsc[0] }}" alt="Главная страница" style="position: absolute; top: 28px; left: 24px; max-width: 36px; height: auto;">
+        <div class="0" style="display: flex; align-items: center; justify-content: left;font-size: 18px; color: #595959; width: 20%; height: 92px; position: absolute; left: 64px; top: calc(50% - 46px);">
+            <a href="{{ author_link }}" >
+            <h1 class="0" style="font-size: 18px; color: #595959; text-align: left; ">
+                Автор: {{ publication['author'] }}
+            </h1>
+            </a>
+        </div>
+    </a>
+    </div>
+
+    <div class="container" style="margin-top: 128px; font-size: 24px;">
+        <img class="book_pic" src="{{ publication['path2pic'] }}" alt="{{ publication['path2pic'] }}" style="height: 256px; width: auto; display: block;
+            margin: 0 auto; "><br><br>
+        <h1 style="margin-left: 64px;">{{ publication['title'] }}</h1>
+
+        <div class="book_text">
+            <p align="justify" style="padding: 32px 32px 32px 32px; top: 00px; margin: 22px 20px">
+            {% for line in book_text %}
+                {{ line }}<br>
+            {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="header2">
+        <div style="height: 1px; border: 1px solid #ccc; flex-grow: 1;"></div>
+
+        <form method="POST" action="/like" class="like-btn">
+            <input type="hidden" name="publicationcode" value="{{ publication['publicationcode'] }}">
+            <button style="background-color: rgba(0, 0, 0, 0.0); border: none; cursor: pointer;" type="submit"><img src="{{ asts_rsc[5] }}" alt="Like"></button>
+            <span class="like-count">{{ publication['likes'] }}</span>
+        </form>
+
+        <a href="/comments-{{ publication['publicationcode'] }}" class="comment-btn">
+            <img src="{{ asts_rsc[3] }}" alt="Коментарии">
+        </a>
+
+        <div style="height: 1px; border: 1px solid #ccc; flex-grow: 1;"></div>
+    </div>
+</body>
+</html>

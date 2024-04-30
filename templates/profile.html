@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 75%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .publication {
+            max-width: 95%;
+            height: 128px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: thick double #f2f2f2;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: white;
+            align-items: center;
+        }
+        .publication:hover {
+            border-color: #ddd;
+        }
+        .publication .rectangle {
+            display: block;
+            cursor: pointer;
+            align-items: right;
+            align-items: center;
+        }
+        .publication .text {
+            font-size: 30px;
+            max-width: 65%;
+            padding: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            align-items: right;
+        }
+        h4 {
+            font-size: 30px;
+            max-width: 65%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .bkpic img {
+            max-width: 120px;
+            height: 120px;
+            border-radius: 8px;
+        }
+        .logout-btn {
+            width: 144px;
+            height: 40px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        .publication img {
+            float: right;
+        }
+        .bkpic {
+            position: relative;
+            text-align: right;
+            margin-right: 8px;
+            margin-top: -128px
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/profile">
+                <img src="{{ asts_rsc[2] }}" alt="Мой аккаунт" style="position: absolute; top: 38px; right: 12.55%; max-width: 48px; height: auto;">
+            </a>
+            <a href="/upload">
+                <img src="{{ asts_rsc[1] }}" alt="Загрузить" style="position: absolute; top: 38px; right: calc(12.55% + 58px); max-width: 48px; height: auto;">
+            </a>
+            <a href="/">
+                <img src="{{ asts_rsc[3] }}" alt="MyLib" style="position: absolute; top: 32px; left: 12.15%; max-width: 192px; height: auto;">
+            </a>
+        </div>
+        <h3>‍‍‍‍‍‍‍</h3>
+        <h1>Приветствуем Вас, {{ username }}!</h1>
+
+        <form action="/save_profile" method="post">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" value="{{ username }}"><br>
+
+            <label for="user_email">Email:</label><br>
+            <input type="text" id="user_email" name="user_email" value="{{ mail_session }}"><br>
+
+            <label for="userpass">Password:</label><br>
+            <input type="password" id="userpass" name="userpass"><br><br>
+
+            <button type="submit">Сохранить данные и Войти в систему</button>
+        </form>
+        <h18> </h18>
+        <form action="/logout" method="post">
+          <button type="submit" class="logout-btn">Выйти</button>
+        </form>
+        <h2>Ваши публикации:</h2>
+        <ul>
+            {% for publication in publications %}
+                <li class="publication">
+                    <div style="align-items: center;" class="rectangle" onclick="redirectToBook('{{ url_for('book', publicationcode=publication['publicationcode']) }}')">
+                        <div class="text">
+                            <h4>{{ publication['title'] }}</h4></div>
+                        <div class="bkpic"><img src="{{ publication['path2pic'] }}" alt="IMG/JPG"></div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <form action="/logout" method="post">
+</form>
+    </div>
+
+    <script>
+        function redirectToBook(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
